@@ -1,0 +1,1825 @@
+/*==============================================================*/
+/* DBMS name:      MySQL 5.0                                    */
+/* Created on:     2015/9/10 16:59:45                           */
+/*==============================================================*/
+drop database if exists zhongansts; 
+
+create database zhongansts CHARACTER SET 'utf8' COLLATE 'utf8_general_ci';
+
+use zhongansts;
+
+/*==============================================================*/
+/* Table: T_ZhongAn_Algorithm                                   */
+/*==============================================================*/
+create table T_ZhongAn_Algorithm
+(
+   F_Algorithm_ID       varchar(38) not null,
+   F_Operator_ID        varchar(38),
+   F_Shop_ID            varchar(38),
+   F_Terminal_ID        varchar(38),
+   F_Title              varchar(50),
+   F_Algorithm_Type     varchar(5),
+   F_Token_Technology   varchar(5),
+   F_Datetime           datetime,
+   F_Change_Datetime    bigint,
+   primary key (F_Algorithm_ID)
+)ENGINE=InnoDB DEFAULT CHARSET=utf8;
+
+/*==============================================================*/
+/* Index: T_ZhongAn_Algorithm_Index_F_Title                     */
+/*==============================================================*/
+create unique index T_ZhongAn_Algorithm_Index_F_Title on T_ZhongAn_Algorithm
+(
+   F_Title
+);
+
+/*==============================================================*/
+/* Table: T_ZhongAn_Arrears                                     */
+/*==============================================================*/
+create table T_ZhongAn_Arrears
+(
+   F_Arrears_ID         varchar(38) not null,
+   F_Customer_ID        varchar(38),
+   F_Operator_ID        varchar(38),
+   F_Shop_ID            varchar(38),
+   F_Terminal_ID        varchar(38),
+   F_Title              varchar(50),
+   F_Value              float default 0 comment '',
+   F_Value_Taxable      float comment '',
+   F_Remark             varchar(100),
+   F_Transactioin_Number varchar(50) comment '',
+   F_Datetime           datetime,
+   F_Change_Datetime    bigint default 0,
+   primary key (F_Arrears_ID)
+)ENGINE=InnoDB DEFAULT CHARSET=utf8;
+
+/*==============================================================*/
+/* Index: T_ZhongAn_Arrears_Index_F_Title                       */
+/*==============================================================*/
+create unique index T_ZhongAn_Arrears_Index_F_Title on T_ZhongAn_Arrears
+(
+   F_Title,
+   F_Customer_ID
+);
+
+/*==============================================================*/
+/* Table: T_ZhongAn_Arrears_Charge                              */
+/*==============================================================*/
+create table T_ZhongAn_Arrears_Charge
+(
+   F_Arrears_Charge_ID  varchar(38) not null,
+   F_Operator_ID        varchar(38),
+   F_Shop_ID            varchar(38),
+   F_Terminal_ID        varchar(38),
+   F_Title              varchar(100),
+   F_Method             int comment '0 - %
+            1 - $',
+   F_Arrears_Rate       float,
+   F_Activation_Datetime datetime comment '',
+   F_Datetime           datetime,
+   F_Change_Datetime    bigint default 0,
+   primary key (F_Arrears_Charge_ID)
+)ENGINE=InnoDB DEFAULT CHARSET=utf8;
+
+alter table T_ZhongAn_Arrears_Charge comment '';
+
+/*==============================================================*/
+/* Index: T_ZhongAn_Arrears_Charge_Index_F_Title                */
+/*==============================================================*/
+create unique index T_ZhongAn_Arrears_Charge_Index_F_Title on T_ZhongAn_Arrears_Charge
+(
+   F_Title
+);
+
+/*==============================================================*/
+/* Table: T_ZhongAn_Block_Charge                                */
+/*==============================================================*/
+create table T_ZhongAn_Block_Charge
+(
+   F_Block_Charge_ID    varchar(38) not null,
+   F_Vat_Charge_ID      varchar(38),
+   F_Shop_ID            varchar(38),
+   F_Terminal_ID        varchar(38),
+   F_Operator_ID        varchar(38),
+   F_Title              varchar(100),
+   F_Transfer_Amount    int default 0,
+   F_Price0             float default 0 comment '',
+   F_Price1             float comment '',
+   F_Price2             float comment '',
+   F_Activation_Datetime datetime comment '',
+   F_Datetime           datetime,
+   F_Change_Datetime    bigint default 0,
+   primary key (F_Block_Charge_ID)
+)ENGINE=InnoDB DEFAULT CHARSET=utf8;
+
+/*==============================================================*/
+/* Table: T_ZhongAn_Configuration                               */
+/*==============================================================*/
+create table T_ZhongAn_Configuration
+(
+   F_Configuration_ID   varchar(38) not null,
+   F_Vat_Charge_ID      varchar(38),
+   F_Operator_ID        varchar(38),
+   F_Shop_ID            varchar(38),
+   F_Terminal_ID        varchar(38),
+   F_Refund_Mode        varchar(500) comment '
+            '',''
+            ,,',
+   F_Pay_Mode           varchar(500) comment '
+            '',''
+            ,',
+   F_Shop_Class         varchar(500) comment '',
+   F_Shop_Status        varchar(500),
+   F_MeterType_Class    varchar(500),
+   F_Unit_Symbols       varchar(10),
+   F_Currency           float default 0,
+   F_IsRound            bool default 0 comment 'true  Round Up
+            false Round Down',
+   F_Vending_Point_IsRound bool default 0,
+   F_Decimal_Places_Scale_Factor int default 100,
+   F_Default_LowCreditLevel float default 0,
+   F_Default_EmergencyCreditAllowance float default 0,
+   F_Default_MaximumCreditAllowed float default 0,
+   F_Init_Day           int default 1,
+   F_Init_Hour          int default 1,
+   F_Amount_To_Vend     float comment '',
+   F_Datetime           datetime,
+   F_Change_Datetime    bigint default 0,
+   primary key (F_Configuration_ID)
+)ENGINE=InnoDB DEFAULT CHARSET=utf8;
+
+/*==============================================================*/
+/* Table: T_ZhongAn_Country                                     */
+/*==============================================================*/
+create table T_ZhongAn_Country
+(
+   F_Country_ID         varchar(38) not null,
+   F_Operator_ID        varchar(38),
+   F_Shop_ID            varchar(38),
+   F_Terminal_ID        varchar(38),
+   F_Name               varchar(100),
+   F_Datetime           datetime,
+   F_Change_Datetime    bigint default 0,
+   primary key (F_Country_ID)
+)ENGINE=InnoDB DEFAULT CHARSET=utf8;
+
+/*==============================================================*/
+/* Index: T_ZhongAn_Country_Index_F_Name                        */
+/*==============================================================*/
+create unique index T_ZhongAn_Country_Index_F_Name on T_ZhongAn_Country
+(
+   F_Name
+);
+
+/*==============================================================*/
+/* Table: T_ZhongAn_Customer                                    */
+/*==============================================================*/
+create table T_ZhongAn_Customer
+(
+   F_Customer_ID        varchar(38) not null,
+   F_Customer_Type_ID   varchar(38),
+   F_Country_ID         varchar(38),
+   F_District_ID        varchar(38),
+   F_Town_ID            varchar(38),
+   F_Operator_ID        varchar(38),
+   F_Shop_ID            varchar(38),
+   F_Terminal_ID        varchar(38),
+   F_Title              varchar(100),
+   F_First_Name         varchar(50),
+   F_Midde_Name         varchar(50),
+   F_Sumname            varchar(50),
+   F_Gerder             int default 0,
+   F_Image              varchar(50),
+   F_Account_Number     varchar(20),
+   F_Arrears            float default 0 comment '',
+   F_Arrears_Taxable    float comment '',
+   F_Arrears_Paid       float default 0 comment '',
+   F_Arrears_Paid_Taxable float comment '',
+   F_ID_Number          varchar(100),
+   F_Tax_Number         varchar(100),
+   F_Address1           varchar(500),
+   F_Address2           varchar(500),
+   F_Address3           varchar(500),
+   F_Zip_Code           varchar(100),
+   F_Contact_Number1    varchar(100),
+   F_Contact_Number2    varchar(100),
+   F_Language           varchar(100),
+   F_Status             int default 0 comment '0 Register 1 Move In 2 Move Out',
+   F_Comments           varchar(500),
+   F_Datetime           datetime,
+   F_Change_Datetime    bigint default 0,
+   primary key (F_Customer_ID)
+)ENGINE=InnoDB DEFAULT CHARSET=utf8;
+
+/*==============================================================*/
+/* Index: T_ZhongAn_Customer_Index_F_Account_Numbe              */
+/*==============================================================*/
+create unique index T_ZhongAn_Customer_Index_F_Account_Numbe on T_ZhongAn_Customer
+(
+   F_Account_Number
+);
+
+/*==============================================================*/
+/* Table: T_ZhongAn_Customer_Account                            */
+/*==============================================================*/
+create table T_ZhongAn_Customer_Account
+(
+   F_Customer_Account_ID varchar(38) not null,
+   F_Customer_ID        varchar(38),
+   F_Shop_ID            varchar(38),
+   F_Terminal_ID        varchar(38),
+   F_Operator_ID        varchar(38),
+   F_Account_Number     varchar(50),
+   F_Password           varchar(100),
+   F_Balance            double default 0,
+   F_Remark             varchar(500),
+   F_Datetime           datetime,
+   F_Change_Datetime    bigint default 0,
+   primary key (F_Customer_Account_ID)
+)ENGINE=InnoDB DEFAULT CHARSET=utf8;
+
+/*==============================================================*/
+/* Index: T_ZhongAn_Customer_Account_Index_F_Account_Number     */
+/*==============================================================*/
+create unique index T_ZhongAn_Customer_Account_Index_F_Account_Number on T_ZhongAn_Customer_Account
+(
+   F_Account_Number
+);
+
+/*==============================================================*/
+/* Table: T_ZhongAn_Customer_Account_Income                     */
+/*==============================================================*/
+create table T_ZhongAn_Customer_Account_Income
+(
+   F_Customer_Account_Income_ID varchar(38) not null,
+   F_Customer_Account_ID varchar(38),
+   F_Shop_ID            varchar(38),
+   F_Operator_ID        varchar(38),
+   F_Terminal_ID        varchar(38),
+   F_Method             int default 0 comment '0 - 
+            1 - ',
+   F_Double             double default 0,
+   F_Remark             varchar(500),
+   F_Transactioin_Number varchar(50) comment '',
+   F_Is_Reversal        smallint comment 'reversal 0  reversal , 1  reversal ',
+   F_Datetime           datetime,
+   F_Change_Datetime    bigint default 0,
+   primary key (F_Customer_Account_Income_ID)
+)ENGINE=InnoDB DEFAULT CHARSET=utf8;
+
+/*==============================================================*/
+/* Table: T_ZhongAn_Customer_Account_Payout                     */
+/*==============================================================*/
+create table T_ZhongAn_Customer_Account_Payout
+(
+   F_Customer_Account_Payout_ID varchar(38) not null,
+   F_Customer_Account_ID varchar(38),
+   F_Shop_ID            varchar(38),
+   F_Operator_ID        varchar(38),
+   F_Terminal_ID        varchar(38),
+   F_Double             double default 0,
+   F_Remark             varchar(500),
+   F_Datetime           datetime,
+   F_Change_Datetime    bigint default 0,
+   primary key (F_Customer_Account_Payout_ID)
+)ENGINE=InnoDB DEFAULT CHARSET=utf8;
+
+/*==============================================================*/
+/* Table: T_ZhongAn_Customer_Move_In_Out_Location_History       */
+/*==============================================================*/
+create table T_ZhongAn_Customer_Move_In_Out_Location_History
+(
+   F_Customer_Move_In_Out_Location_History_ID varchar(38) not null,
+   F_Operator_ID        varchar(38),
+   F_Shop_ID            varchar(38),
+   F_Terminal_ID        varchar(38),
+   F_Customer_ID        varchar(38),
+   F_Location_ID        varchar(38),
+   F_Status             int default 0 comment '0 - move in
+            1 - move out',
+   F_Remark             varchar(500),
+   F_Datetime           datetime,
+   F_Change_Datetime    bigint default 0,
+   primary key (F_Customer_Move_In_Out_Location_History_ID)
+)ENGINE=InnoDB DEFAULT CHARSET=utf8;
+
+/*==============================================================*/
+/* Table: T_ZhongAn_Customer_Type                               */
+/*==============================================================*/
+create table T_ZhongAn_Customer_Type
+(
+   F_Customer_Type_ID   varchar(38) not null,
+   F_Operator_ID        varchar(38),
+   F_Shop_ID            varchar(38),
+   F_Terminal_ID        varchar(38),
+   F_Title              varchar(100),
+   F_Remark             varchar(500),
+   F_Datetime           datetime,
+   F_Change_Datetime    bigint default 0,
+   primary key (F_Customer_Type_ID)
+)ENGINE=InnoDB DEFAULT CHARSET=utf8;
+
+/*==============================================================*/
+/* Index: T_ZhongAn_Customer_Type_Index_F_Title                 */
+/*==============================================================*/
+create unique index T_ZhongAn_Customer_Type_Index_F_Title on T_ZhongAn_Customer_Type
+(
+   F_Title
+);
+
+/*==============================================================*/
+/* Table: T_ZhongAn_Discount_Charge                             */
+/*==============================================================*/
+create table T_ZhongAn_Discount_Charge
+(
+   F_Discount_Charge_ID varchar(38) not null,
+   F_Vat_Charge_ID      varchar(38),
+   F_Operator_ID        varchar(38),
+   F_Shop_ID            varchar(38),
+   F_Terminal_ID        varchar(38),
+   F_Title              varchar(100),
+   F_Discount_Rate      float default 0,
+   F_Activation_Datetime datetime comment '',
+   F_Datetime           datetime,
+   F_Change_Datetime    bigint default 0,
+   primary key (F_Discount_Charge_ID)
+)ENGINE=InnoDB DEFAULT CHARSET=utf8;
+
+alter table T_ZhongAn_Discount_Charge comment '';
+
+/*==============================================================*/
+/* Table: T_ZhongAn_District                                    */
+/*==============================================================*/
+create table T_ZhongAn_District
+(
+   F_District_ID        varchar(38) not null,
+   F_Country_ID         varchar(38),
+   F_Operator_ID        varchar(38),
+   F_Shop_ID            varchar(38),
+   F_Terminal_ID        varchar(38),
+   F_Name               varchar(100),
+   F_Datetime           datetime,
+   F_Change_Datetime    bigint,
+   primary key (F_District_ID)
+)ENGINE=InnoDB DEFAULT CHARSET=utf8;
+
+/*==============================================================*/
+/* Index: T_ZhongAn_District_Index_F_Name                       */
+/*==============================================================*/
+create unique index T_ZhongAn_District_Index_F_Name on T_ZhongAn_District
+(
+   F_Name,
+   F_Country_ID
+);
+
+/*==============================================================*/
+/* Table: T_ZhongAn_EndShift_History                            */
+/*==============================================================*/
+create table T_ZhongAn_EndShift_History
+(
+   F_EndShift_ID        varchar(38) not null,
+   F_Shop_ID            varchar(38),
+   F_Operator_ID        varchar(38),
+   F_Terminal_ID        varchar(38),
+   F_Authorise_ID       varchar(38),
+   F_Sequence_Number    int,
+   F_Remark             varchar(100),
+   F_Datetime           datetime,
+   F_Change_Datetime    bigint default 0,
+   primary key (F_EndShift_ID)
+)ENGINE=InnoDB DEFAULT CHARSET=utf8;
+
+/*==============================================================*/
+/* Table: T_ZhongAn_Event_Log                                   */
+/*==============================================================*/
+create table T_ZhongAn_Event_Log
+(
+   F_Event_Log_ID       varchar(38) not null,
+   F_Shop_ID            varchar(38),
+   F_Terminal_ID        varchar(38),
+   F_Operator_ID        varchar(38),
+   F_Event              varchar(50),
+   F_Description        varchar(500),
+   F_Value              text,
+   F_Datetime           datetime,
+   F_Change_Datetime    bigint default 0,
+   primary key (F_Event_Log_ID)
+)ENGINE=InnoDB DEFAULT CHARSET=utf8;
+
+/*==============================================================*/
+/* Table: T_ZhongAn_Fixed_Charge                                */
+/*==============================================================*/
+create table T_ZhongAn_Fixed_Charge
+(
+   F_Fixed_Charge_ID    varchar(38) not null,
+   F_Vat_Charge_ID      varchar(38),
+   F_Operator_ID        varchar(38),
+   F_Shop_ID            varchar(38),
+   F_Terminal_ID        varchar(38),
+   F_Title              varchar(100),
+   F_Fixed              float default 0,
+   F_Limit              int default 0 comment 'daily/weekly/monthly/annual/time',
+   F_Limit_Class        int default 0 comment ': -1 -   0 -  1 -   2 -   3 -   4 - ',
+   F_Paid_Method        int default 0 comment '0 paid to advance
+            1 paid to arrears',
+   F_Activation_Datetime datetime comment '',
+   F_Datetime           datetime,
+   F_Change_Datetime    bigint default 0,
+   primary key (F_Fixed_Charge_ID)
+)ENGINE=InnoDB DEFAULT CHARSET=utf8;
+
+/*==============================================================*/
+/* Index: T_ZhongAn_Fixed_Charge_Index_F_Title                  */
+/*==============================================================*/
+create unique index T_ZhongAn_Fixed_Charge_Index_F_Title on T_ZhongAn_Fixed_Charge
+(
+   F_Title
+);
+
+/*==============================================================*/
+/* Table: T_ZhongAn_Group                                       */
+/*==============================================================*/
+create table T_ZhongAn_Group
+(
+   F_Group_ID           varchar(38) not null,
+   F_Shop_ID            varchar(38),
+   F_Terminal_ID        varchar(38),
+   F_Operator_ID        varchar(38),
+   F_Title              varchar(100),
+   F_Description        varchar(500),
+   F_Power              varchar(500),
+   F_Datetime           datetime,
+   F_Change_Datetime    bigint default 0,
+   primary key (F_Group_ID)
+)ENGINE=InnoDB DEFAULT CHARSET=utf8;
+
+/*==============================================================*/
+/* Index: T_ZhongAn_Group_Index_F_Title                         */
+/*==============================================================*/
+create unique index T_ZhongAn_Group_Index_F_Title on T_ZhongAn_Group
+(
+   F_Title
+);
+
+/*==============================================================*/
+/* Table: T_ZhongAn_Job                                         */
+/*==============================================================*/
+create table T_ZhongAn_Job
+(
+   F_Job_ID             varchar(38) not null,
+   F_Title              varchar(100),
+   F_Datetime           datetime,
+   F_Change_Datetime    bigint default 0,
+   primary key (F_Job_ID)
+)ENGINE=InnoDB DEFAULT CHARSET=utf8;
+
+/*==============================================================*/
+/* Table: T_ZhongAn_Location                                    */
+/*==============================================================*/
+create table T_ZhongAn_Location
+(
+   F_Location_ID        varchar(38) not null,
+   F_Customer_ID        varchar(38),
+   F_Country_ID         varchar(38),
+   F_District_ID        varchar(38),
+   F_Town_ID            varchar(38),
+   F_Tariff_Charge_Group_ID varchar(38),
+   F_Operator_ID        varchar(38),
+   F_Shop_ID            varchar(38),
+   F_Terminal_ID        varchar(38),
+   F_Location_Name      varchar(100),
+   F_Post_Zip_Code      varchar(100),
+   F_Address1           varchar(100),
+   F_Address2           varchar(100),
+   F_Address3           varchar(100),
+   F_Remark             varchar(500),
+   F_Status             int default 0 comment '¡¡¡¡
+            
+            
+   F_Meters             varchar(500) default '0' comment ' 1111(£¬£¬£¬)',
+   F_Longitude          float,
+   F_Latitude           float,
+   F_Meter_Mobile_Number varchar(20),
+   F_Purchaser_Mobile_Number varchar(20),
+   F_Pole_Identifier    varchar(50),
+   F_Meter_Advance_Amount_Owing float,
+   F_Meter_Advance_Amount_Paid float,
+   F_Datetime           datetime,
+   F_Change_Datetime    bigint default 0,
+   primary key (F_Location_ID)
+)ENGINE=InnoDB DEFAULT CHARSET=utf8;
+
+/*==============================================================*/
+/* Index: T_ZhongAn_Location_Index_F_Location_Name              */
+/*==============================================================*/
+create unique index T_ZhongAn_Location_Index_F_Location_Name on T_ZhongAn_Location
+(
+   F_Location_Name
+);
+
+/*==============================================================*/
+/* Table: T_ZhongAn_LoginAndout_History                         */
+/*==============================================================*/
+create table T_ZhongAn_LoginAndout_History
+(
+   F_Login_ID           varchar(38) not null,
+   F_Shop_ID            varchar(38),
+   F_Operator_ID        varchar(38),
+   F_Mac                varchar(50),
+   F_Ip                 varchar(50),
+   F_Status             int default 0 comment '0 
+            1 ',
+   F_Datetime           datetime,
+   F_Change_Datetime    bigint default 0,
+   primary key (F_Login_ID)
+)ENGINE=InnoDB DEFAULT CHARSET=utf8;
+
+/*==============================================================*/
+/* Table: T_ZhongAn_Manufacturer                                */
+/*==============================================================*/
+create table T_ZhongAn_Manufacturer
+(
+   F_Manufacturer_ID    varchar(38) not null,
+   F_Country_ID         varchar(38),
+   F_District_ID        varchar(38),
+   F_Town_ID            varchar(38),
+   F_Operator_ID        varchar(38),
+   F_Shop_ID            varchar(38),
+   F_Terminal_ID        varchar(38),
+   F_Title              varchar(100),
+   F_Manufacturer       varchar(100),
+   F_Linkman            varchar(100),
+   F_Contact_Number1    varchar(100),
+   F_Contact_Number2    varchar(100),
+   F_Email              varchar(100),
+   F_Fax_Number         varchar(100),
+   F_Remark             varchar(500),
+   F_Datetime           datetime,
+   F_Change_Datetime    bigint default 0,
+   primary key (F_Manufacturer_ID)
+)ENGINE=InnoDB DEFAULT CHARSET=utf8;
+
+/*==============================================================*/
+/* Index: F_ZhongAn_Manufacturer_Index_F_Title                  */
+/*==============================================================*/
+create unique index F_ZhongAn_Manufacturer_Index_F_Title on T_ZhongAn_Manufacturer
+(
+   F_Title
+);
+
+/*==============================================================*/
+/* Index: T_ZhongAn_Manufacturer_Index_F_Manufacturer           */
+/*==============================================================*/
+create unique index T_ZhongAn_Manufacturer_Index_F_Manufacturer on T_ZhongAn_Manufacturer
+(
+   F_Manufacturer
+);
+
+/*==============================================================*/
+/* Table: T_ZhongAn_Meter                                       */
+/*==============================================================*/
+create table T_ZhongAn_Meter
+(
+   F_Meter_ID           varchar(38) not null,
+   F_Shop_ID            varchar(38),
+   F_Terminal_ID        varchar(38),
+   F_Operator_ID        varchar(38),
+   F_Storage_ID         varchar(38),
+   F_Meter_Type_ID      varchar(38),
+   F_Manufacturer_ID    varchar(38),
+   F_Location_ID        varchar(38),
+   F_Algorithm_ID       varchar(38),
+   F_SGC_ID             varchar(38),
+   F_DispenserPAN       varchar(20),
+   F_Old_DispenserPAN   varchar(20) default '00000000000',
+   F_Alt_ID             varchar(50),
+   F_Alt_Number         varchar(50),
+   F_Key_Register_Number int default 0,
+   F_Old_Sgc            varchar(6) default '999951',
+   F_Old_Key_Revision_Number int default 0,
+   F_Key_Revision_Number int default 0,
+   F_Old_TI             int default 0,
+   F_TI                 int default 0,
+   F_LowCreditLevel     float default 0 comment '',
+   F_EmergencyCreditAllowance float default 0 comment '',
+   F_MaximumCreditAllowed float,
+   F_Status             int default 0 comment '0: registered 1:installed, 2:connected, 3:change out, 4:change out for location',
+   F_Details            varchar(500),
+   F_Is_Key_Change      int default 1 comment ' 0  1 ',
+   F_Unit_Class         int comment '
+            0 - 
+            1 - 
+            2 - ',
+   F_Datetime           datetime,
+   F_Change_Datetime    bigint default 0,
+   primary key (F_Meter_ID)
+)ENGINE=InnoDB DEFAULT CHARSET=utf8;
+
+/*==============================================================*/
+/* Index: T_ZhongAn_Meter_Index_F_DispenserPAN                  */
+/*==============================================================*/
+create unique index T_ZhongAn_Meter_Index_F_DispenserPAN on T_ZhongAn_Meter
+(
+   F_DispenserPAN
+);
+
+/*==============================================================*/
+/* Table: T_ZhongAn_Meter_Change_Out_History                    */
+/*==============================================================*/
+create table T_ZhongAn_Meter_Change_Out_History
+(
+   F_Meter_Change_Out_Location_History_ID varchar(38) not null,
+   F_Operator_ID        varchar(38),
+   F_Shop_ID            varchar(38),
+   F_Terminal_ID        varchar(38),
+   F_Meter_ID           varchar(38),
+   F_Location_ID        varchar(38),
+   F_Storage_ID         varchar(38),
+   F_Remark             varchar(500),
+   F_Status             int default 0 comment '0 change out
+            1 change out for location',
+   F_Datetime           datetime,
+   F_Change_Datetime    bigint default 0,
+   primary key (F_Meter_Change_Out_Location_History_ID)
+)ENGINE=InnoDB DEFAULT CHARSET=utf8;
+
+/*==============================================================*/
+/* Table: T_ZhongAn_Meter_History                               */
+/*==============================================================*/
+create table T_ZhongAn_Meter_History
+(
+   F_Meter_History_ID   varchar(38) not null,
+   F_Meter_ID           varchar(38),
+   F_Location_ID        varchar(38),
+   F_Customer_ID        varchar(38),
+   F_Operator_ID        varchar(38),
+   F_Shop_ID            varchar(38),
+   F_Terminal_ID        varchar(38),
+   F_Used_Credit        float,
+   F_Remainder_Credit   float,
+   F_Total_Credit       float,
+   F_Meter_Run_Status   int,
+   F_KT                 int,
+   F_KRN                int,
+   F_TI                 int,
+   F_LowCreditLevel     float default 0 comment '',
+   F_EmergencyCreditAllowance float default 0 comment '',
+   F_MaximumCreditAllowed float,
+   F_Water_Factor       int,
+   F_Mod_Status         int,
+   F_Credit_Times       int,
+   F_Recently_Credit    float,
+   F_Hardware_Version   varchar(4),
+   F_Recently10_Credit  varchar(100),
+   F_Datetime           datetime,
+   F_Change_Datetime    bigint default 0,
+   primary key (F_Meter_History_ID)
+)ENGINE=InnoDB DEFAULT CHARSET=utf8;
+
+alter table T_ZhongAn_Meter_History comment '£¬£¬';
+
+/*==============================================================*/
+/* Table: T_ZhongAn_Meter_Link_Location_History                 */
+/*==============================================================*/
+create table T_ZhongAn_Meter_Link_Location_History
+(
+   F_Meter_Link_Location_History varchar(38) not null,
+   F_Meter_ID           varchar(38),
+   F_Location_ID        varchar(38),
+   F_Operator_ID        varchar(38),
+   F_Shop_ID            varchar(38),
+   F_Terminal_ID        varchar(38),
+   F_SGC_TItle          varchar(100),
+   F_Store_Title        varchar(100),
+   F_Manufacturer_Title varchar(100),
+   F_MeterType_Title    varchar(100),
+   F_Krn                int default 0,
+   F_Ti                 int default 0,
+   F_Status             int default 0 comment '0 - link in
+            1 - disconnect link',
+   F_Datetime           datetime,
+   F_Change_Datetime    bigint default 0,
+   primary key (F_Meter_Link_Location_History)
+)ENGINE=InnoDB DEFAULT CHARSET=utf8;
+
+/*==============================================================*/
+/* Table: T_ZhongAn_Meter_Type                                  */
+/*==============================================================*/
+create table T_ZhongAn_Meter_Type
+(
+   F_Meter_Type_ID      varchar(38) not null,
+   F_Manufacturer_ID    varchar(38),
+   F_Service_Type_ID    varchar(38),
+   F_Operator_ID        varchar(38),
+   F_Shop_ID            varchar(38),
+   F_Terminal_ID        varchar(38),
+   F_Title              varchar(100),
+   F_Remark             varchar(500),
+   F_Datetime           datetime,
+   F_Change_Datetime    bigint default 0,
+   primary key (F_Meter_Type_ID)
+)ENGINE=InnoDB DEFAULT CHARSET=utf8;
+
+/*==============================================================*/
+/* Index: F_ZhongAn_Meter_Type_Index_F_Ttile                    */
+/*==============================================================*/
+create unique index F_ZhongAn_Meter_Type_Index_F_Ttile on T_ZhongAn_Meter_Type
+(
+   F_Title
+);
+
+/*==============================================================*/
+/* Table: T_ZhongAn_Operator                                    */
+/*==============================================================*/
+create table T_ZhongAn_Operator
+(
+   F_Operator_ID        varchar(38) not null,
+   F_Group_ID           varchar(38),
+   F_Shop_ID            varchar(38),
+   F_Terminal_ID        varchar(38),
+   F_Job_ID             varchar(38),
+   F_Country_ID         varchar(38),
+   F_Town_ID            varchar(38),
+   F_District_ID        varchar(38),
+   F_ID                 varchar(100),
+   F_Account            varchar(50),
+   F_Password           varchar(100),
+   F_Password_Indate    datetime comment '',
+   F_Lock               int default 0 comment '0 - 
+            1 - ',
+   F_Login_Model        int default 1 comment '
+            0 
+            1 ',
+   F_Login_Range        int default 0 comment '
+            0 Shop
+            1 Shop',
+   F_First_Name         varchar(50),
+   F_Middle_Name        varchar(50),
+   F_Sumname            varchar(50),
+   F_Gerder             int default 0 comment '0 Mr
+            1 Ms
+            2 Miss
+            3 Mrs',
+   F_Address1           varchar(500),
+   F_Address2           varchar(500),
+   F_Address3           varchar(500),
+   F_Contact_Number1    varchar(100),
+   F_Contact_Number2    varchar(100),
+   F_Email              varchar(100),
+   F_Remark             varchar(1000),
+   F_Expand             varchar(100),
+   F_Status             int default 0 comment '0 
+            1 
+            2 ',
+   F_Datetime           datetime,
+   F_Change_Datetime    bigint default 0,
+   primary key (F_Operator_ID)
+)ENGINE=InnoDB DEFAULT CHARSET=utf8;
+
+/*==============================================================*/
+/* Index: T_ZhongAn_Operator_Index_F_Account                    */
+/*==============================================================*/
+create unique index T_ZhongAn_Operator_Index_F_Account on T_ZhongAn_Operator
+(
+   F_Account
+);
+
+/*==============================================================*/
+/* Index: T_ZhongAn_Operator_Index_F_ID                         */
+/*==============================================================*/
+create unique index T_ZhongAn_Operator_Index_F_ID on T_ZhongAn_Operator
+(
+   F_ID
+);
+
+/*==============================================================*/
+/* Table: T_ZhongAn_Payment_History                             */
+/*==============================================================*/
+create table T_ZhongAn_Payment_History
+(
+   F_Payment_History_ID varchar(38) not null,
+   F_Customer_ID        varchar(38),
+   F_Operator_ID        varchar(38),
+   F_Shop_ID            varchar(38),
+   F_Terminal_ID        varchar(38),
+   F_Value              float default 0,
+   F_Value_Taxable      float default 0,
+   F_Tax                float comment '',
+   F_Method             int default 0 comment '0 - 
+            1 - ',
+   F_Where_From         int comment '0 - the payment came from a direct customer payment 
+            1- came from an automatic charge during vending',
+   F_Remark             varchar(100),
+   F_Transactioin_Number varchar(50) comment '',
+   F_Datetime           datetime,
+   F_Change_Datetime    bigint default 0,
+   primary key (F_Payment_History_ID)
+)ENGINE=InnoDB DEFAULT CHARSET=utf8;
+
+/*==============================================================*/
+/* Table: T_ZhongAn_Pda_History                                 */
+/*==============================================================*/
+create table T_ZhongAn_Pda_History
+(
+   F_Pda_History_ID     varchar(38) not null,
+   F_Operator_ID        varchar(38),
+   F_Shop_ID            varchar(38),
+   F_Terminal_ID        varchar(38),
+   F_Meter_Number       varchar(11),
+   F_Command            varchar(50),
+   F_Writer_Date        varchar(100) comment '',
+   F_Read_Date          varchar(100) comment '',
+   F_Successful         smallint comment '',
+   F_Datetime           datetime,
+   F_Change_Datetime    bigint default 0,
+   primary key (F_Pda_History_ID)
+)ENGINE=InnoDB DEFAULT CHARSET=utf8;
+
+alter table T_ZhongAn_Pda_History comment 'PDA Data History';
+
+/*==============================================================*/
+/* Table: T_ZhongAn_Power                                       */
+/*==============================================================*/
+create table T_ZhongAn_Power
+(
+   F_Power_ID           varchar(38) not null,
+   F_Operator_ID        varchar(38),
+   F_Shop_ID            varchar(38),
+   F_Terminal_ID        varchar(38),
+   F_Title              varchar(100),
+   F_Description        varchar(500),
+   F_Datetime           datetime,
+   F_Change_Datetime    bigint default 0,
+   primary key (F_Power_ID)
+)ENGINE=InnoDB DEFAULT CHARSET=utf8;
+
+/*==============================================================*/
+/* Table: T_ZhongAn_Report                                      */
+/*==============================================================*/
+create table T_ZhongAn_Report
+(
+   F_Report_ID          varchar(38) not null,
+   F_Operator_ID        varchar(38),
+   F_Shop_ID            varchar(38),
+   F_Terminal_ID        varchar(38),
+   F_Title              varchar(100),
+   F_Url                varchar(500),
+   F_Remark             varchar(500),
+   F_Datetime           datetime,
+   F_Change_Datetime    bigint default 0,
+   primary key (F_Report_ID)
+)ENGINE=InnoDB DEFAULT CHARSET=utf8;
+
+/*==============================================================*/
+/* Table: T_ZhongAn_Reversals_Token                             */
+/*==============================================================*/
+create table T_ZhongAn_Reversals_Token
+(
+   F_Reversals_Token_ID varchar(38) not null,
+   F_Token_ID           varchar(38),
+   F_Operator_ID        varchar(38),
+   F_Shop_ID            varchar(38),
+   F_Authorise_ID       varchar(38) comment 'ID',
+   F_Terminal_ID        varchar(38),
+   F_Remark             varchar(500),
+   F_Datetime           datetime,
+   F_Change_Datetime    bigint default 0,
+   primary key (F_Reversals_Token_ID)
+)ENGINE=InnoDB DEFAULT CHARSET=utf8;
+
+/*==============================================================*/
+/* Table: T_ZhongAn_SM                                          */
+/*==============================================================*/
+create table T_ZhongAn_SM
+(
+   F_SM_ID              varchar(38) not null,
+   F_SM_Server_ID       varchar(38),
+   F_Operator_ID        varchar(38),
+   F_Shop_ID            varchar(38),
+   F_Terminal_ID        varchar(38),
+   F_SM_Type            varchar(10),
+   F_Record_Type        varchar(4),
+   F_Device_Identification_Number varchar(8),
+   F_Key_File_Version_Number varchar(2),
+   F_Firmware_Version_Number varchar(8),
+   F_Firmware_Authentication_Key varchar(16),
+   F_Firmware_Authentication_Code varchar(8),
+   F_Device_Authentication_Message varchar(64),
+   F_Device_Authentication_Code varchar(8),
+   F_Reserved           varchar(64),
+   F_Port               int default 4786 comment '',
+   F_Balance            int default 0,
+   F_Balance_Model      int default 0 comment '  0 £¬ 1  ',
+   F_Auto_Syn_Key       int default 0 comment '0 £¬ 1  ',
+   F_Status             int default 0 comment '0 - , 1 - ,  2 - ',
+   F_Remarks            varchar(100),
+   F_Datetime           datetime,
+   F_Change_Datetime    bigint default 0,
+   primary key (F_SM_ID)
+)ENGINE=InnoDB DEFAULT CHARSET=utf8;
+
+/*==============================================================*/
+/* Index: T_ZhongAn_SM_Index_F_Device_Identification_Number     */
+/*==============================================================*/
+create unique index T_ZhongAn_SM_Index_F_Device_Identification_Number on T_ZhongAn_SM
+(
+   F_Device_Identification_Number
+);
+
+/*==============================================================*/
+/* Index: T_ZhongAn_SM_Index_F_Port                             */
+/*==============================================================*/
+create unique index T_ZhongAn_SM_Index_F_Port on T_ZhongAn_SM
+(
+   F_Port,
+   F_SM_Server_ID
+);
+
+/*==============================================================*/
+/* Table: T_ZhongAn_SM_Key                                      */
+/*==============================================================*/
+create table T_ZhongAn_SM_Key
+(
+   F_SM_key_ID          varchar(38) not null,
+   F_SM_ID              varchar(38),
+   F_Operator_ID        varchar(38),
+   F_Shop_ID            varchar(38),
+   F_Terminal_ID        varchar(38),
+   F_Record_Type        varchar(4),
+   F_Supply_Group_Code  varchar(6),
+   F_Key_Register_Number varchar(2),
+   F_Key_Revision_Number varchar(1),
+   F_Key_Function       varchar(2),
+   F_Key_Type           varchar(1),
+   F_Key_Parity         varchar(1),
+   F_Key_Encryption_Method varchar(1),
+   F_Parent_Key_Register_Number varchar(2),
+   F_Key_Value          varchar(16),
+   F_Key_Check_Digits   varchar(16),
+   F_Date_Sent          varchar(8),
+   F_Time_Sent          varchar(6),
+   F_Date_Active        varchar(8),
+   F_Time_Active        varchar(6),
+   F_Base_Date          varchar(8),
+   F_Key_Expiry_Number  varchar(3),
+   F_Supply_Group_Name  varchar(40),
+   F_Supply_Group_Classification varchar(1),
+   F_Status             int default 0 comment '0  1  2 ',
+   F_Remarks            varchar(500),
+   F_Datetime           datetime,
+   F_Change_Datetime    bigint default 0,
+   primary key (F_SM_key_ID)
+)ENGINE=InnoDB DEFAULT CHARSET=utf8;
+
+/*==============================================================*/
+/* Index: T_ZhongAn_SM_Key_Index_F_Key_Value                    */
+/*==============================================================*/
+create unique index T_ZhongAn_SM_Key_Index_F_Key_Value on T_ZhongAn_SM_Key
+(
+   F_Key_Value
+);
+
+/*==============================================================*/
+/* Index: T_ZhongAn_SM_Key_Index_F_Supply_Group_Code            */
+/*==============================================================*/
+create unique index T_ZhongAn_SM_Key_Index_F_Supply_Group_Code on T_ZhongAn_SM_Key
+(
+   F_Supply_Group_Code,
+   F_Key_Revision_Number,
+   F_SM_ID
+);
+
+/*==============================================================*/
+/* Table: T_ZhongAn_SM_Server                                   */
+/*==============================================================*/
+create table T_ZhongAn_SM_Server
+(
+   F_SM_Server_ID       varchar(38) not null,
+   F_Operator_ID        varchar(38),
+   F_Shop_ID            varchar(38),
+   F_Terminal_ID        varchar(38),
+   F_Title              varchar(50),
+   F_Address            varchar(50),
+   F_Remark             varchar(100),
+   F_Datetime           datetime,
+   F_Change_Datetime    bigint default 0,
+   primary key (F_SM_Server_ID)
+)ENGINE=InnoDB DEFAULT CHARSET=utf8;
+
+/*==============================================================*/
+/* Table: T_ZhongAn_Serial_Number                               */
+/*==============================================================*/
+create table T_ZhongAn_Serial_Number
+(
+   F_Serial_Number_ID   varchar(38) not null,
+   F_Operator_ID        varchar(38),
+   F_Shop_ID            varchar(38),
+   F_Terminal_ID        varchar(38),
+   F_Title              varchar(50),
+   F_Format             varchar(100) comment '
+               0
+               1 ()
+              2 ()
+              3 ()
+            0:0,1:(0,1,2,3,4),2:(),3:()',
+   F_Current_Serial     int default 0,
+   F_Datetime           datetime,
+   F_Change_Datetime    bigint default 0,
+   primary key (F_Serial_Number_ID)
+)ENGINE=InnoDB DEFAULT CHARSET=utf8;
+
+alter table T_ZhongAn_Serial_Number comment '';
+
+/*==============================================================*/
+/* Table: T_ZhongAn_Service_Type                                */
+/*==============================================================*/
+create table T_ZhongAn_Service_Type
+(
+   F_Service_Type_ID    varchar(38) not null,
+   F_Operator_ID        varchar(38),
+   F_Shop_ID            varchar(38),
+   F_Terminal_ID        varchar(38),
+   F_Title              varchar(100),
+   F_Class              int default 0 comment '0 - Electricity 1 - Water  2 - Gas  3 - Caloric ',
+   F_Datetime           datetime,
+   F_Change_Datetime    bigint default 0,
+   primary key (F_Service_Type_ID)
+)ENGINE=InnoDB DEFAULT CHARSET=utf8;
+
+/*==============================================================*/
+/* Table: T_ZhongAn_Sgc                                         */
+/*==============================================================*/
+create table T_ZhongAn_Sgc
+(
+   F_SGC_ID             varchar(38) not null,
+   F_Operator_ID        varchar(38),
+   F_Shop_ID            varchar(38),
+   F_Terminal_ID        varchar(38),
+   F_Title              varchar(100),
+   F_SGC                varchar(6),
+   F_Key_Type           varchar(1),
+   F_Key_Revision_Number varchar(1),
+   F_Datetime           datetime,
+   F_Change_Datetime    bigint default 0,
+   primary key (F_SGC_ID)
+)ENGINE=InnoDB DEFAULT CHARSET=utf8;
+
+/*==============================================================*/
+/* Index: T_ZhongAn_Sgc_Index_F_SGC                             */
+/*==============================================================*/
+create unique index T_ZhongAn_Sgc_Index_F_SGC on T_ZhongAn_Sgc
+(
+   F_SGC_ID
+);
+
+/*==============================================================*/
+/* Table: T_ZhongAn_Shop                                        */
+/*==============================================================*/
+create table T_ZhongAn_Shop
+(
+   F_Shop_ID            varchar(38) not null,
+   F_Shop_Level_ID      varchar(38),
+   F_Country_ID         varchar(38),
+   F_Town_ID            varchar(38),
+   F_District_ID        varchar(38),
+   F_Operator_ID        varchar(38),
+   F_Terminal_ID        varchar(38),
+   F_Account            varchar(50),
+   F_Password           varchar(100),
+   F_Title              varchar(100),
+   F_ID                 varchar(100),
+   F_Balance            float default 0,
+   F_Linkman            varchar(100),
+   F_Address1           varchar(500),
+   F_Address2           varchar(500),
+   F_Address3           varchar(500),
+   F_VAT_Number         varchar(100),
+   F_Contact_Number1    varchar(100),
+   F_Contact_Number2    varchar(100),
+   F_Mail               varchar(100),
+   F_Class              int default 0 comment '0 - untility 1 - 3rd party',
+   F_Status             int default 1 comment '0   1  ',
+   F_Remark             varchar(500),
+   F_Datetime           datetime,
+   F_Change_Datetime    bigint default 0,
+   primary key (F_Shop_ID)
+)ENGINE=InnoDB DEFAULT CHARSET=utf8;
+
+/*==============================================================*/
+/* Index: T_ZhongAn_Shop_Index_F_Account                        */
+/*==============================================================*/
+create unique index T_ZhongAn_Shop_Index_F_Account on T_ZhongAn_Shop
+(
+   F_Account
+);
+
+/*==============================================================*/
+/* Index: F_ZhongAn_Shop_Index_F_Title                          */
+/*==============================================================*/
+create unique index F_ZhongAn_Shop_Index_F_Title on T_ZhongAn_Shop
+(
+   F_Title
+);
+
+/*==============================================================*/
+/* Index: F_ZhongAn_Shop_Index_F_ID                             */
+/*==============================================================*/
+create unique index F_ZhongAn_Shop_Index_F_ID on T_ZhongAn_Shop
+(
+   F_ID
+);
+
+/*==============================================================*/
+/* Table: T_ZhongAn_Shop_Account                                */
+/*==============================================================*/
+create table T_ZhongAn_Shop_Account
+(
+   F_Shop_Account_ID    varchar(38) not null,
+   F_Shop_ID            varchar(38),
+   F_Operator_ID        varchar(38),
+   F_Account_Number     varchar(50) comment '',
+   F_Password           varchar(100),
+   F_Balance            double default 0,
+   F_Remark             varchar(500),
+   F_Datetime           datetime,
+   F_Change_Datetime    bigint default 0,
+   primary key (F_Shop_Account_ID)
+)ENGINE=InnoDB DEFAULT CHARSET=utf8;
+
+/*==============================================================*/
+/* Index: T_ZhongAn_Shop_Account_Index_F_Account_Number         */
+/*==============================================================*/
+create unique index T_ZhongAn_Shop_Account_Index_F_Account_Number on T_ZhongAn_Shop_Account
+(
+   F_Account_Number
+);
+
+/*==============================================================*/
+/* Table: T_ZhongAn_Shop_Account_Income                         */
+/*==============================================================*/
+create table T_ZhongAn_Shop_Account_Income
+(
+   F_Shop_Account_Income_ID varchar(38) not null,
+   F_Shop_Account_ID    varchar(38),
+   F_Shop_ID            varchar(38),
+   F_Operator_ID        varchar(38),
+   F_Terminal_ID        varchar(38),
+   F_Method             int default 0 comment '0 - 
+            1 - ',
+   F_Double             double default 0,
+   F_Remark             varchar(500),
+   F_Transactioin_Number varchar(50) comment '',
+   F_Is_Reversal        smallint comment 'reversal 0  reversal , 1  reversal ',
+   F_Datetime           datetime,
+   F_Change_Datetime    bigint default 0,
+   primary key (F_Shop_Account_Income_ID)
+)ENGINE=InnoDB DEFAULT CHARSET=utf8;
+
+/*==============================================================*/
+/* Table: T_ZhongAn_Shop_Account_Payout                         */
+/*==============================================================*/
+create table T_ZhongAn_Shop_Account_Payout
+(
+   F_Shop_Account_Payout_ID varchar(38) not null,
+   F_Shop_Account_ID    varchar(38),
+   F_Customer_ID        varchar(38),
+   F_Token_ID           varchar(38),
+   F_Payment_History_ID varchar(38),
+   F_Shop_ID            varchar(38),
+   F_Operator_ID        varchar(38),
+   F_Terminal_ID        varchar(38),
+   F_Double             double default 0,
+   F_Payout_Type        smallint default 0 comment '0 A Vend Transaction 
+            1 A Consumer Payment Transaction',
+   F_Remark             varchar(500),
+   F_Datetime           datetime,
+   F_Change_Datetime    bigint default 0,
+   primary key (F_Shop_Account_Payout_ID)
+)ENGINE=InnoDB DEFAULT CHARSET=utf8;
+
+/*==============================================================*/
+/* Table: T_ZhongAn_Shop_Level                                  */
+/*==============================================================*/
+create table T_ZhongAn_Shop_Level
+(
+   F_Shop_Level_ID      varchar(38) not null,
+   F_Operator_ID        varchar(38),
+   F_Shop_ID            varchar(38),
+   F_Terminal_ID        varchar(38),
+   F_Title              varchar(100),
+   F_Rebate             float default 0,
+   F_Remark             varchar(500),
+   F_Datetime           datetime,
+   F_Change_Datetime    bigint default 0,
+   primary key (F_Shop_Level_ID)
+)ENGINE=InnoDB DEFAULT CHARSET=utf8;
+
+/*==============================================================*/
+/* Index: T_ZhongAn_Shop_Level_Index_F_Title                    */
+/*==============================================================*/
+create unique index T_ZhongAn_Shop_Level_Index_F_Title on T_ZhongAn_Shop_Level
+(
+   F_Title
+);
+
+/*==============================================================*/
+/* Table: T_ZhongAn_Storage                                     */
+/*==============================================================*/
+create table T_ZhongAn_Storage
+(
+   F_Storage_ID         varchar(38) not null,
+   F_Town_ID            varchar(38),
+   F_District_ID        varchar(38),
+   F_Location_ID        varchar(38),
+   F_Country_ID         varchar(38),
+   F_Operator_ID        varchar(38),
+   F_Shop_ID            varchar(38),
+   F_Terminal_ID        varchar(38),
+   F_Title              varchar(100),
+   F_Address1           varchar(500),
+   F_Address2           varchar(500),
+   F_Address3           varchar(500),
+   F_Contact_Number1    varchar(100),
+   F_Contact_Number2    varchar(100),
+   F_Email              varchar(100),
+   F_Linkman            varchar(100),
+   F_Class              int default 0,
+   F_Status             int default 0,
+   F_Remark             varchar(500),
+   F_Datetime           datetime,
+   F_Change_Datetime    bigint default 0,
+   primary key (F_Storage_ID)
+)ENGINE=InnoDB DEFAULT CHARSET=utf8;
+
+/*==============================================================*/
+/* Index: T_ZhongAn_Storage_Index_F_Title                       */
+/*==============================================================*/
+create unique index T_ZhongAn_Storage_Index_F_Title on T_ZhongAn_Storage
+(
+   F_Title
+);
+
+/*==============================================================*/
+/* Table: T_ZhongAn_Surcharge_Charge                            */
+/*==============================================================*/
+create table T_ZhongAn_Surcharge_Charge
+(
+   F_Surcharge_Charge_ID varchar(38) not null,
+   F_Vat_Charge_ID      varchar(38),
+   F_Operator_ID        varchar(38),
+   F_Shop_ID            varchar(38),
+   F_Terminal_ID        varchar(38),
+   F_Title              varchar(100),
+   F_Surcharge          float default 0,
+   F_Activation_Datetime datetime comment '',
+   F_Datetime           datetime,
+   F_Change_Datetime    bigint default 0,
+   primary key (F_Surcharge_Charge_ID)
+)ENGINE=InnoDB DEFAULT CHARSET=utf8;
+
+alter table T_ZhongAn_Surcharge_Charge comment '';
+
+/*==============================================================*/
+/* Index: T_ZhongAn_Surcharge_Charge_Index_F_Title              */
+/*==============================================================*/
+create unique index T_ZhongAn_Surcharge_Charge_Index_F_Title on T_ZhongAn_Surcharge_Charge
+(
+   F_Title
+);
+
+/*==============================================================*/
+/* Table: T_ZhongAn_Tariff_Charge                               */
+/*==============================================================*/
+create table T_ZhongAn_Tariff_Charge
+(
+   F_Tariff_Charge_ID   varchar(38) not null,
+   F_Operator_ID        varchar(38),
+   F_Shop_ID            varchar(38),
+   F_Terminal_ID        varchar(38),
+   F_Tariff_Charge_Profile_ID varchar(38),
+   F_Block_Charge_ID    varchar(38),
+   F_Fixed_Charge_ID    varchar(38),
+   F_Surcharge_Charge_ID varchar(38),
+   F_Discount_Charge_ID varchar(38),
+   F_Arrears_Charge_ID  varchar(38),
+   F_Datetime           datetime,
+   F_Change_Datetime    bigint default 0,
+   primary key (F_Tariff_Charge_ID)
+)ENGINE=InnoDB DEFAULT CHARSET=utf8;
+
+/*==============================================================*/
+/* Table: T_ZhongAn_Tariff_Charge_Future                        */
+/*==============================================================*/
+create table T_ZhongAn_Tariff_Charge_Future
+(
+   F_Tariff_Charge_Future_ID varchar(38) not null,
+   F_Block_Charge_ID    varchar(38),
+   F_Fixed_Charge_ID    varchar(38),
+   F_Surcharge_Charge_ID varchar(38),
+   F_Discount_Charge_ID varchar(38),
+   F_Arrears_Charge_ID  varchar(38),
+   F_Tariff_Charge_Profile_Future_ID varchar(38),
+   F_Operator_ID        varchar(38),
+   F_Shop_ID            varchar(38),
+   F_Terminal_ID        varchar(38),
+   F_Datetime           datetime,
+   F_Change_Datetime    bigint default 0,
+   primary key (F_Tariff_Charge_Future_ID)
+)ENGINE=InnoDB DEFAULT CHARSET=utf8;
+
+/*==============================================================*/
+/* Table: T_ZhongAn_Tariff_Charge_Group                         */
+/*==============================================================*/
+create table T_ZhongAn_Tariff_Charge_Group
+(
+   F_Tariff_Charge_Group_ID varchar(38) not null,
+   F_Operator_ID        varchar(38),
+   F_Shop_ID            varchar(38),
+   F_Terminal_ID        varchar(38),
+   F_Title              varchar(100),
+   F_Remark             varchar(500),
+   F_Datetime           datetime,
+   F_Change_Datetime    bigint default 0,
+   primary key (F_Tariff_Charge_Group_ID)
+)ENGINE=InnoDB DEFAULT CHARSET=utf8;
+
+alter table T_ZhongAn_Tariff_Charge_Group comment '';
+
+/*==============================================================*/
+/* Index: T_ZhongAn_Tariff_Charge_Group_Index_F_Title           */
+/*==============================================================*/
+create unique index T_ZhongAn_Tariff_Charge_Group_Index_F_Title on T_ZhongAn_Tariff_Charge_Group
+(
+   F_Title
+);
+
+/*==============================================================*/
+/* Table: T_ZhongAn_Tariff_Charge_Profile                       */
+/*==============================================================*/
+create table T_ZhongAn_Tariff_Charge_Profile
+(
+   F_Tariff_Charge_Profile_ID varchar(38) not null,
+   F_Service_Type_ID    varchar(38),
+   F_Tariff_Charge_Group_ID varchar(38),
+   F_Operator_ID        varchar(38),
+   F_Shop_ID            varchar(38),
+   F_Terminal_ID        varchar(38),
+   F_Title              varchar(50),
+   F_Limit              int default 0,
+   F_Limit_Class        int default 0 comment ': 0 -  1 -   2 -   3 -   4 - ',
+   F_Min_Vend_Amount    float,
+   F_Max_Vend_Amount    float,
+   F_Datetime           datetime,
+   F_Change_Datetime    bigint default 0,
+   primary key (F_Tariff_Charge_Profile_ID)
+)ENGINE=InnoDB DEFAULT CHARSET=utf8;
+
+/*==============================================================*/
+/* Table: T_ZhongAn_Tariff_Charge_Profile_Future                */
+/*==============================================================*/
+create table T_ZhongAn_Tariff_Charge_Profile_Future
+(
+   F_Tariff_Charge_Profile_Future_ID varchar(38) not null,
+   F_Tariff_Charge_Profile_ID varchar(38),
+   F_Operator_ID        varchar(38),
+   F_Shop_ID            varchar(38),
+   F_Terminal_ID        varchar(38),
+   F_Status             int comment '0 - 
+            1 - ',
+   F_Datetime           datetime not null,
+   F_Change_Datetime    bigint default 0,
+   primary key (F_Tariff_Charge_Profile_Future_ID)
+)ENGINE=InnoDB DEFAULT CHARSET=utf8;
+
+/*==============================================================*/
+/* Table: T_ZhongAn_Terminal                                    */
+/*==============================================================*/
+create table T_ZhongAn_Terminal
+(
+   F_Terminal_ID        varchar(38) not null,
+   F_Shop_ID            varchar(38),
+   F_Operator_ID        varchar(38),
+   F_Title              varchar(100),
+   F_Mac                varchar(50),
+   F_Ip                 varchar(50),
+   F_Remark             varchar(500),
+   F_Datetime           datetime,
+   F_Change_Datetime    bigint default 0,
+   primary key (F_Terminal_ID)
+)ENGINE=InnoDB DEFAULT CHARSET=utf8;
+
+/*==============================================================*/
+/* Table: T_ZhongAn_Token                                       */
+/*==============================================================*/
+create table T_ZhongAn_Token
+(
+   F_Token_ID           varchar(38) not null,
+   F_Meter_ID           varchar(38) not null,
+   F_Customer_ID        varchar(38),
+   F_Location_ID        varchar(38),
+   F_Operator_ID        varchar(38),
+   F_Shop_ID            varchar(38),
+   F_Terminal_ID        varchar(38),
+   F_Class              int default 0,
+   F_Subclass           int default 0,
+   F_Token              varchar(100),
+   F_Transfer_Amount    float default 0,
+   F_Fee                float default 0,
+   F_Fee_VAT            float default 0,
+   F_Fee1               float default 0,
+   F_Fee1_VAT           float default 0,
+   F_Fee2               float default 0,
+   F_Fee2_VAT           float default 0,
+   F_Fee3               float default 0,
+   F_Fee3_VAT           float default 0,
+   F_Fee4               float default 0,
+   F_Fee4_VAT           float default 0,
+   F_Fee5               float default 0,
+   F_Fee5_VAT           float default 0,
+   F_Fee6               float default 0,
+   F_Fee6_VAT           float default 0,
+   F_Fee7               float default 0,
+   F_Fee7_VAT           float default 0,
+   F_Fee8               float default 0,
+   F_Fee8_VAT           float default 0,
+   F_Fee9               float default 0,
+   F_Fee9_VAT           float default 0,
+   F_Fee10              float default 0,
+   F_Fee10_VAT          float default 0,
+   F_Rounding           float,
+   F_Status             int default 0 comment '0 -  1 - FBE   2 - Reversals  3 Free Issue',
+   F_Collect            float default 0 comment '',
+   F_Pay_Mode           int default 0 comment '0 -   1 - ',
+   F_Pay_Number         varchar(50),
+   F_Who_Give_Class     int default 0 comment 'Point of sale or Point of Mobile i.e.
+            0 
+            1 ',
+   F_Transactioin_Number varchar(50) comment '',
+   F_Datetime           datetime,
+   F_Change_Datetime    bigint default 0,
+   primary key (F_Token_ID)
+)ENGINE=InnoDB DEFAULT CHARSET=utf8;
+
+/*==============================================================*/
+/* Table: T_ZhongAn_Token_Charge                                */
+/*==============================================================*/
+create table T_ZhongAn_Token_Charge
+(
+   F_Token_Charge_ID    varchar(38) not null,
+   F_Token_ID           varchar(38),
+   F_Meter_ID           varchar(38),
+   F_Location_ID        varchar(38),
+   F_Operator_ID        varchar(38),
+   F_Shop_ID            varchar(38),
+   F_Terminal_ID        varchar(38),
+   F_Charge_ID          varchar(38),
+   F_Charge_Calss       int default 0 comment ': 0 -  1 -   2 -    3 -',
+   F_Title              varchar(100),
+   F_Amount             float default 0,
+   F_Price              float default 0,
+   F_Tax_Rate           float default 0,
+   F_Datetime           datetime,
+   F_Change_Datetime    bigint default 0,
+   primary key (F_Token_Charge_ID)
+)ENGINE=InnoDB DEFAULT CHARSET=utf8;
+
+/*==============================================================*/
+/* Table: T_ZhongAn_Town                                        */
+/*==============================================================*/
+create table T_ZhongAn_Town
+(
+   F_Town_ID            varchar(38) not null,
+   F_District_ID        varchar(38),
+   F_Operator_ID        varchar(38),
+   F_Shop_ID            varchar(38),
+   F_Terminal_ID        varchar(38),
+   F_Name               varchar(100),
+   F_Datetime           datetime,
+   F_Change_Datetime    bigint default 0,
+   primary key (F_Town_ID)
+)ENGINE=InnoDB DEFAULT CHARSET=utf8;
+
+/*==============================================================*/
+/* Index: T_ZhongAn_Town_Index_F_Name                           */
+/*==============================================================*/
+create unique index T_ZhongAn_Town_Index_F_Name on T_ZhongAn_Town
+(
+   F_Name,
+   F_District_ID
+);
+
+/*==============================================================*/
+/* Table: T_ZhongAn_Vat_Charge                                  */
+/*==============================================================*/
+create table T_ZhongAn_Vat_Charge
+(
+   F_Vat_Charge_ID      varchar(38) not null,
+   F_Operator_ID        varchar(38),
+   F_Shop_ID            varchar(38),
+   F_Terminal_ID        varchar(38),
+   F_Title              varchar(100),
+   F_VAT                float default 0,
+   F_Activation_Datetime datetime comment '',
+   F_Datetime           datetime,
+   F_Change_Datetime    bigint default 0,
+   primary key (F_Vat_Charge_ID)
+)ENGINE=InnoDB DEFAULT CHARSET=utf8;
+
+/*==============================================================*/
+/* Index: T_ZhongAn_Vat_Charge_Index_F_Title                    */
+/*==============================================================*/
+create unique index T_ZhongAn_Vat_Charge_Index_F_Title on T_ZhongAn_Vat_Charge
+(
+   F_Title
+);
+
+/*==============================================================*/
+/* Table: T_ZhongAn_Vend_Authorisation                          */
+/*==============================================================*/
+create table T_ZhongAn_Vend_Authorisation
+(
+   F_Vend_Authorisation_ID varchar(38) not null,
+   F_Token_ID           varchar(38),
+   F_Operator_ID        varchar(38),
+   F_Shop_ID            varchar(38),
+   F_Terminal_ID        varchar(38),
+   F_Authorise_ID       varchar(38),
+   F_Authorise_Type     smallint comment '0 Free Issue
+            1 Suppress Charges',
+   F_Remark             varchar(500),
+   F_Datetime           datetime,
+   F_Change_Datetime    bigint default 0,
+   primary key (F_Vend_Authorisation_ID)
+)ENGINE=InnoDB DEFAULT CHARSET=utf8;
+
+alter table T_ZhongAn_Vend_Authorisation comment 'vend Authorisation for Free Issue, Suppress Charges';
+
+alter table T_ZhongAn_Arrears add constraint FK_Reference_87 foreign key (F_Customer_ID)
+      references T_ZhongAn_Customer (F_Customer_ID);
+
+alter table T_ZhongAn_Block_Charge add constraint FK_Reference_81 foreign key (F_Vat_Charge_ID)
+      references T_ZhongAn_Vat_Charge (F_Vat_Charge_ID);
+
+alter table T_ZhongAn_Configuration add constraint FK_Reference_117 foreign key (F_Vat_Charge_ID)
+      references T_ZhongAn_Vat_Charge (F_Vat_Charge_ID);
+
+alter table T_ZhongAn_Customer add constraint Reference_34 foreign key (F_Customer_Type_ID)
+      references T_ZhongAn_Customer_Type (F_Customer_Type_ID);
+
+alter table T_ZhongAn_Customer add constraint FK_Reference_72 foreign key (F_Country_ID)
+      references T_ZhongAn_Country (F_Country_ID);
+
+alter table T_ZhongAn_Customer add constraint FK_Reference_73 foreign key (F_District_ID)
+      references T_ZhongAn_District (F_District_ID);
+
+alter table T_ZhongAn_Customer add constraint FK_Reference_74 foreign key (F_Town_ID)
+      references T_ZhongAn_Town (F_Town_ID);
+
+alter table T_ZhongAn_Customer_Account add constraint FK_Reference_53 foreign key (F_Customer_ID)
+      references T_ZhongAn_Customer (F_Customer_ID);
+
+alter table T_ZhongAn_Customer_Account_Income add constraint FK_Reference_55 foreign key (F_Customer_Account_ID)
+      references T_ZhongAn_Customer_Account (F_Customer_Account_ID);
+
+alter table T_ZhongAn_Customer_Account_Payout add constraint FK_Reference_54 foreign key (F_Customer_Account_ID)
+      references T_ZhongAn_Customer_Account (F_Customer_Account_ID);
+
+alter table T_ZhongAn_Customer_Move_In_Out_Location_History add constraint Reference_11 foreign key (F_Customer_ID)
+      references T_ZhongAn_Customer (F_Customer_ID);
+
+alter table T_ZhongAn_Customer_Move_In_Out_Location_History add constraint Reference_12 foreign key (F_Location_ID)
+      references T_ZhongAn_Location (F_Location_ID);
+
+alter table T_ZhongAn_Discount_Charge add constraint FK_Reference_84 foreign key (F_Vat_Charge_ID)
+      references T_ZhongAn_Vat_Charge (F_Vat_Charge_ID);
+
+alter table T_ZhongAn_District add constraint FK_Reference_60 foreign key (F_Country_ID)
+      references T_ZhongAn_Country (F_Country_ID);
+
+alter table T_ZhongAn_Fixed_Charge add constraint FK_Reference_82 foreign key (F_Vat_Charge_ID)
+      references T_ZhongAn_Vat_Charge (F_Vat_Charge_ID);
+
+alter table T_ZhongAn_Location add constraint Reference_39 foreign key (F_District_ID)
+      references T_ZhongAn_District (F_District_ID);
+
+alter table T_ZhongAn_Location add constraint FK_Reference_45 foreign key (F_Customer_ID)
+      references T_ZhongAn_Customer (F_Customer_ID);
+
+alter table T_ZhongAn_Location add constraint FK_Reference_65 foreign key (F_Country_ID)
+      references T_ZhongAn_Country (F_Country_ID);
+
+alter table T_ZhongAn_Location add constraint Reference_7 foreign key (F_Town_ID)
+      references T_ZhongAn_Town (F_Town_ID);
+
+alter table T_ZhongAn_Location add constraint FK_Reference_88 foreign key (F_Tariff_Charge_Group_ID)
+      references T_ZhongAn_Tariff_Charge_Group (F_Tariff_Charge_Group_ID);
+
+alter table T_ZhongAn_LoginAndout_History add constraint FK_Reference_58 foreign key (F_Shop_ID)
+      references T_ZhongAn_Shop (F_Shop_ID);
+
+alter table T_ZhongAn_LoginAndout_History add constraint FK_Reference_59 foreign key (F_Operator_ID)
+      references T_ZhongAn_Operator (F_Operator_ID);
+
+alter table T_ZhongAn_Manufacturer add constraint FK_Reference_66 foreign key (F_District_ID)
+      references T_ZhongAn_District (F_District_ID);
+
+alter table T_ZhongAn_Manufacturer add constraint FK_Reference_67 foreign key (F_Country_ID)
+      references T_ZhongAn_Country (F_Country_ID);
+
+alter table T_ZhongAn_Manufacturer add constraint FK_Reference_68 foreign key (F_Town_ID)
+      references T_ZhongAn_Town (F_Town_ID);
+
+alter table T_ZhongAn_Meter add constraint Reference_35 foreign key (F_Storage_ID)
+      references T_ZhongAn_Storage (F_Storage_ID);
+
+alter table T_ZhongAn_Meter add constraint Reference_36 foreign key (F_Meter_Type_ID)
+      references T_ZhongAn_Meter_Type (F_Meter_Type_ID);
+
+alter table T_ZhongAn_Meter add constraint Reference_37 foreign key (F_Manufacturer_ID)
+      references T_ZhongAn_Manufacturer (F_Manufacturer_ID);
+
+alter table T_ZhongAn_Meter add constraint FK_Reference_42 foreign key (F_Location_ID)
+      references T_ZhongAn_Location (F_Location_ID);
+
+alter table T_ZhongAn_Meter add constraint FK_Reference_47 foreign key (F_Algorithm_ID)
+      references T_ZhongAn_Algorithm (F_Algorithm_ID);
+
+alter table T_ZhongAn_Meter add constraint Reference_8 foreign key (F_SGC_ID)
+      references T_ZhongAn_Sgc (F_SGC_ID);
+
+alter table T_ZhongAn_Meter_Change_Out_History add constraint FK_Reference_108 foreign key (F_Storage_ID)
+      references T_ZhongAn_Storage (F_Storage_ID);
+
+alter table T_ZhongAn_Meter_Change_Out_History add constraint Reference_20 foreign key (F_Meter_ID)
+      references T_ZhongAn_Meter (F_Meter_ID);
+
+alter table T_ZhongAn_Meter_Change_Out_History add constraint Reference_21 foreign key (F_Location_ID)
+      references T_ZhongAn_Location (F_Location_ID);
+
+alter table T_ZhongAn_Meter_History add constraint FK_Reference_112 foreign key (F_Meter_ID)
+      references T_ZhongAn_Meter (F_Meter_ID);
+
+alter table T_ZhongAn_Meter_History add constraint FK_Reference_113 foreign key (F_Location_ID)
+      references T_ZhongAn_Location (F_Location_ID);
+
+alter table T_ZhongAn_Meter_History add constraint FK_Reference_114 foreign key (F_Customer_ID)
+      references T_ZhongAn_Customer (F_Customer_ID);
+
+alter table T_ZhongAn_Meter_Link_Location_History add constraint FK_Reference_100 foreign key (F_Meter_ID)
+      references T_ZhongAn_Meter (F_Meter_ID);
+
+alter table T_ZhongAn_Meter_Link_Location_History add constraint FK_Reference_101 foreign key (F_Location_ID)
+      references T_ZhongAn_Location (F_Location_ID);
+
+alter table T_ZhongAn_Meter_Type add constraint FK_Reference_115 foreign key (F_Service_Type_ID)
+      references T_ZhongAn_Service_Type (F_Service_Type_ID);
+
+alter table T_ZhongAn_Meter_Type add constraint FK_Reference_92 foreign key (F_Manufacturer_ID)
+      references T_ZhongAn_Manufacturer (F_Manufacturer_ID);
+
+alter table T_ZhongAn_Operator add constraint Reference_16 foreign key (F_Group_ID)
+      references T_ZhongAn_Group (F_Group_ID);
+
+alter table T_ZhongAn_Operator add constraint Reference_28 foreign key (F_Shop_ID)
+      references T_ZhongAn_Shop (F_Shop_ID);
+
+alter table T_ZhongAn_Operator add constraint Reference_29 foreign key (F_Job_ID)
+      references T_ZhongAn_Job (F_Job_ID);
+
+alter table T_ZhongAn_Operator add constraint FK_Reference_75 foreign key (F_Country_ID)
+      references T_ZhongAn_Country (F_Country_ID);
+
+alter table T_ZhongAn_Operator add constraint FK_Reference_76 foreign key (F_Town_ID)
+      references T_ZhongAn_Town (F_Town_ID);
+
+alter table T_ZhongAn_Operator add constraint FK_Reference_77 foreign key (F_District_ID)
+      references T_ZhongAn_District (F_District_ID);
+
+alter table T_ZhongAn_Payment_History add constraint FK_Reference_102 foreign key (F_Customer_ID)
+      references T_ZhongAn_Customer (F_Customer_ID);
+
+alter table T_ZhongAn_Reversals_Token add constraint Reference_22 foreign key (F_Token_ID)
+      references T_ZhongAn_Token (F_Token_ID);
+
+alter table T_ZhongAn_SM add constraint FK_Reference_94 foreign key (F_SM_Server_ID)
+      references T_ZhongAn_SM_Server (F_SM_Server_ID);
+
+alter table T_ZhongAn_SM_Key add constraint FK_Reference_103 foreign key (F_SM_ID)
+      references T_ZhongAn_SM (F_SM_ID);
+
+alter table T_ZhongAn_Shop add constraint Reference_10 foreign key (F_Shop_Level_ID)
+      references T_ZhongAn_Shop_Level (F_Shop_Level_ID);
+
+alter table T_ZhongAn_Shop add constraint FK_Reference_69 foreign key (F_Country_ID)
+      references T_ZhongAn_Country (F_Country_ID);
+
+alter table T_ZhongAn_Shop add constraint FK_Reference_70 foreign key (F_Town_ID)
+      references T_ZhongAn_Town (F_Town_ID);
+
+alter table T_ZhongAn_Shop add constraint FK_Reference_71 foreign key (F_District_ID)
+      references T_ZhongAn_District (F_District_ID);
+
+alter table T_ZhongAn_Shop_Account add constraint FK_Reference_52 foreign key (F_Shop_ID)
+      references T_ZhongAn_Shop (F_Shop_ID);
+
+alter table T_ZhongAn_Shop_Account_Income add constraint FK_Reference_56 foreign key (F_Shop_Account_ID)
+      references T_ZhongAn_Shop_Account (F_Shop_Account_ID);
+
+alter table T_ZhongAn_Shop_Account_Payout add constraint FK_Reference_57 foreign key (F_Shop_Account_ID)
+      references T_ZhongAn_Shop_Account (F_Shop_Account_ID);
+
+alter table T_ZhongAn_Shop_Account_Payout add constraint FK_Reference_93 foreign key (F_Token_ID)
+      references T_ZhongAn_Token (F_Token_ID);
+
+alter table T_ZhongAn_Shop_Account_Payout add constraint FK_Reference_97 foreign key (F_Payment_History_ID)
+      references T_ZhongAn_Payment_History (F_Payment_History_ID);
+
+alter table T_ZhongAn_Shop_Account_Payout add constraint FK_Reference_99 foreign key (F_Customer_ID)
+      references T_ZhongAn_Customer (F_Customer_ID);
+
+alter table T_ZhongAn_Storage add constraint FK_Reference_49 foreign key (F_Town_ID)
+      references T_ZhongAn_Town (F_Town_ID);
+
+alter table T_ZhongAn_Storage add constraint FK_Reference_50 foreign key (F_District_ID)
+      references T_ZhongAn_District (F_District_ID);
+
+alter table T_ZhongAn_Storage add constraint FK_Reference_51 foreign key (F_Location_ID)
+      references T_ZhongAn_Location (F_Location_ID);
+
+alter table T_ZhongAn_Storage add constraint FK_Reference_64 foreign key (F_Country_ID)
+      references T_ZhongAn_Country (F_Country_ID);
+
+alter table T_ZhongAn_Surcharge_Charge add constraint FK_Reference_83 foreign key (F_Vat_Charge_ID)
+      references T_ZhongAn_Vat_Charge (F_Vat_Charge_ID);
+
+alter table T_ZhongAn_Tariff_Charge add constraint FK_Reference_78 foreign key (F_Tariff_Charge_Profile_ID)
+      references T_ZhongAn_Tariff_Charge_Profile (F_Tariff_Charge_Profile_ID);
+
+alter table T_ZhongAn_Tariff_Charge add constraint FK_Reference_79 foreign key (F_Block_Charge_ID)
+      references T_ZhongAn_Block_Charge (F_Block_Charge_ID);
+
+alter table T_ZhongAn_Tariff_Charge add constraint FK_Reference_80 foreign key (F_Fixed_Charge_ID)
+      references T_ZhongAn_Fixed_Charge (F_Fixed_Charge_ID);
+
+alter table T_ZhongAn_Tariff_Charge add constraint FK_Reference_89 foreign key (F_Surcharge_Charge_ID)
+      references T_ZhongAn_Surcharge_Charge (F_Surcharge_Charge_ID);
+
+alter table T_ZhongAn_Tariff_Charge add constraint FK_Reference_90 foreign key (F_Discount_Charge_ID)
+      references T_ZhongAn_Discount_Charge (F_Discount_Charge_ID);
+
+alter table T_ZhongAn_Tariff_Charge add constraint FK_Reference_91 foreign key (F_Arrears_Charge_ID)
+      references T_ZhongAn_Arrears_Charge (F_Arrears_Charge_ID);
+
+alter table T_ZhongAn_Tariff_Charge_Future add constraint FK_Reference_104 foreign key (F_Fixed_Charge_ID)
+      references T_ZhongAn_Fixed_Charge (F_Fixed_Charge_ID);
+
+alter table T_ZhongAn_Tariff_Charge_Future add constraint FK_Reference_105 foreign key (F_Surcharge_Charge_ID)
+      references T_ZhongAn_Surcharge_Charge (F_Surcharge_Charge_ID);
+
+alter table T_ZhongAn_Tariff_Charge_Future add constraint FK_Reference_106 foreign key (F_Discount_Charge_ID)
+      references T_ZhongAn_Discount_Charge (F_Discount_Charge_ID);
+
+alter table T_ZhongAn_Tariff_Charge_Future add constraint FK_Reference_107 foreign key (F_Arrears_Charge_ID)
+      references T_ZhongAn_Arrears_Charge (F_Arrears_Charge_ID);
+
+alter table T_ZhongAn_Tariff_Charge_Future add constraint FK_Reference_95 foreign key (F_Tariff_Charge_Profile_Future_ID)
+      references T_ZhongAn_Tariff_Charge_Profile_Future (F_Tariff_Charge_Profile_Future_ID);
+
+alter table T_ZhongAn_Tariff_Charge_Future add constraint FK_Reference_98 foreign key (F_Block_Charge_ID)
+      references T_ZhongAn_Block_Charge (F_Block_Charge_ID);
+
+alter table T_ZhongAn_Tariff_Charge_Profile add constraint FK_Reference_116 foreign key (F_Service_Type_ID)
+      references T_ZhongAn_Service_Type (F_Service_Type_ID);
+
+alter table T_ZhongAn_Tariff_Charge_Profile add constraint FK_Reference_118 foreign key (F_Tariff_Charge_Group_ID)
+      references T_ZhongAn_Tariff_Charge_Group (F_Tariff_Charge_Group_ID);
+
+alter table T_ZhongAn_Tariff_Charge_Profile_Future add constraint FK_Reference_96 foreign key (F_Tariff_Charge_Profile_ID)
+      references T_ZhongAn_Tariff_Charge_Profile (F_Tariff_Charge_Profile_ID);
+
+alter table T_ZhongAn_Terminal add constraint FK_Reference_62 foreign key (F_Shop_ID)
+      references T_ZhongAn_Shop (F_Shop_ID);
+
+alter table T_ZhongAn_Token add constraint FK_Reference_109 foreign key (F_Location_ID)
+      references T_ZhongAn_Location (F_Location_ID);
+
+alter table T_ZhongAn_Token add constraint Reference_15 foreign key (F_Meter_ID)
+      references T_ZhongAn_Meter (F_Meter_ID);
+
+alter table T_ZhongAn_Token add constraint FK_Reference_46 foreign key (F_Customer_ID)
+      references T_ZhongAn_Customer (F_Customer_ID);
+
+alter table T_ZhongAn_Token_Charge add constraint FK_Reference_110 foreign key (F_Meter_ID)
+      references T_ZhongAn_Meter (F_Meter_ID);
+
+alter table T_ZhongAn_Token_Charge add constraint FK_Reference_111 foreign key (F_Location_ID)
+      references T_ZhongAn_Location (F_Location_ID);
+
+alter table T_ZhongAn_Token_Charge add constraint FK_Reference_41 foreign key (F_Token_ID)
+      references T_ZhongAn_Token (F_Token_ID);
+
+alter table T_ZhongAn_Town add constraint FK_Reference_63 foreign key (F_District_ID)
+      references T_ZhongAn_District (F_District_ID);
+
+alter table T_ZhongAn_Vend_Authorisation add constraint FK_Reference_119 foreign key (F_Token_ID)
+      references T_ZhongAn_Token (F_Token_ID);
